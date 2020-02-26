@@ -1,4 +1,5 @@
 name: vibrate
+version: 0.0.8
 description: A Haptic Feedback plugin.
 environment:
   sdk: ">=2.0.0 <3.0.0"
