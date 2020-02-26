@@ -74,7 +74,7 @@ public class VibratePlugin implements MethodCallHandler {
     }
     else if(call.method.equals("heavy")){
       if(_vibrator.hasVibrator()){
-          int duration = 100;
+          int duration = 500;
           _vibrator.vibrate(duration);
       }
       result.success(null);
