@@ -28,6 +28,10 @@ class Vibrate {
     return isOn;
   }
 
+  static void canPlaySound(bool playSound) async {
+    await _channel.invokeMethod('canPlaySound',playSound??false);
+  }
+
   static void feedback(FeedbackType type) {
     switch (type) {
       case FeedbackType.impact:

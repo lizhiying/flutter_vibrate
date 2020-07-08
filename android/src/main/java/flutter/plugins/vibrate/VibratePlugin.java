@@ -16,8 +16,13 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
  */
 public class VibratePlugin implements MethodCallHandler {
 
+  private Context mContext;
+
+  private boolean playSound=false;
+
   private VibratePlugin(Registrar registrar){
     this._vibrator = (Vibrator)registrar.context().getSystemService(Context.VIBRATOR_SERVICE);
+    mContext=registrar.context().getApplicationContext();
   }
 
   private Vibrator _vibrator;
@@ -32,69 +37,75 @@ public class VibratePlugin implements MethodCallHandler {
     if (call.method.equals("vibrate")) {
       if(_vibrator.hasVibrator()){
         int duration = call.argument("duration");
-        _vibrator.vibrate(duration);
+        sartVibrate(duration);
       }
       result.success(null);
     }
     else if(call.method.equals("canVibrate")){
       result.success(_vibrator.hasVibrator());
-    } //Feedback
-    else if(call.method.equals("impact")){
-      if(_vibrator.hasVibrator()){
-        _vibrator.vibrate(HapticFeedbackConstants.VIRTUAL_KEY);
+    } //Feed
+    else if(call.method.equals("canPlaySound")){
+      if(call.arguments!=null && call.arguments instanceof Boolean){
+        playSound= (boolean) call.arguments;
       }
+      result.success(null);
+    }// back
+    else if(call.method.equals("impact")){
+      sartVibrate(HapticFeedbackConstants.VIRTUAL_KEY);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("selection")){
-      if(_vibrator.hasVibrator()){
-        _vibrator.vibrate(HapticFeedbackConstants.KEYBOARD_TAP);
-      }
+      sartVibrate(HapticFeedbackConstants.KEYBOARD_TAP);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("success")){
-      if(_vibrator.hasVibrator()){
-          int duration = 50;
-          _vibrator.vibrate(duration);
-      }
+      sartVibrate(50);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("warning")){
-      if(_vibrator.hasVibrator()){
-          int duration = 250;
-          _vibrator.vibrate(duration);
-      }
+      sartVibrate(250);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("error")){
-      if(_vibrator.hasVibrator()){
-          int duration = 500;
-          _vibrator.vibrate(duration);
-      }
+      sartVibrate(500);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("heavy")){
-      if(_vibrator.hasVibrator()){
-          int duration = 500;
-          _vibrator.vibrate(duration);
-      }
+      sartVibrate(500);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("medium")){
-      if(_vibrator.hasVibrator()){
-          int duration = 40;
-          _vibrator.vibrate(duration);
-      }
+      sartVibrate(40);
+      playSystemSound();
       result.success(null);
     }
     else if(call.method.equals("light")){
-      if(_vibrator.hasVibrator()){
-          int duration = 10;
-          _vibrator.vibrate(duration);
-      }
+      sartVibrate(10);
+      playSystemSound();
       result.success(null);
     }
     else {
       result.notImplemented();
+    }
+  }
+
+  private void sartVibrate(int duration){
+    if(_vibrator.hasVibrator()){
+      _vibrator.vibrate(duration);
+    }
+  }
+
+  private void playSystemSound(){
+    if(playSound){
+      Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+      Ringtone rt = RingtoneManager.getRingtone(mContext, uri);
+      rt.play();
     }
   }
 }
