@@ -80,7 +80,9 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
 //            } else {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-        AudioServicesPlaySystemSound(1007)
+        if (playSound) {
+          AudioServicesPlaySystemSound(1007)
+        }
          //   }
          case "medium":
             if #available(iOS 10.0, *) {
