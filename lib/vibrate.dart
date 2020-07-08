@@ -29,7 +29,7 @@ class Vibrate {
   }
 
   static void canPlaySound(bool playSound) async {
-    await _channel.invokeMethod('canPlaySound',playSound??false);
+    await _channel.invokeMethod('canPlaySound', playSound ?? false);
   }
 
   static void feedback(FeedbackType type) {
