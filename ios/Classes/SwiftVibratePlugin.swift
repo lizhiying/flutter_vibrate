@@ -5,6 +5,7 @@ import AudioToolbox
 private let isDevice = TARGET_OS_SIMULATOR == 0
     
 public class SwiftVibratePlugin: NSObject, FlutterPlugin {
+    private var playSound = false
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "vibrate", binaryMessenger: registrar.messenger())
     let instance = SwiftVibratePlugin()
@@ -19,6 +20,10 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               } else {
                 result(false)
               }
+        case "canPlaySound":
+        if call.arguments != nil {
+            playSound = call.arguments as! Bool;
+        }
           case "vibrate":
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             // Feedback
@@ -75,6 +80,7 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
 //            } else {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1007)
          //   }
          case "medium":
             if #available(iOS 10.0, *) {
