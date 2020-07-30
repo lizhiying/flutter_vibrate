@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
 
   init() async {
     bool canVibrate = await Vibrate.canVibrate;
+    Vibrate.canPlaySound(true);
     setState(() {
       _canVibrate = canVibrate;
       _canVibrate
