@@ -56,7 +56,7 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
         if (playSound) {
-            if let path = Bundle.main.path(forResource: "failed", ofType: "wav") {
+            if let path = Bundle.main.path(forResource: "success", ofType: "mp3") {
             playAudio(path);
             }
         }
