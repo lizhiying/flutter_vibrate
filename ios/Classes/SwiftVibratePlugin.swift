@@ -6,6 +6,7 @@ private let isDevice = TARGET_OS_SIMULATOR == 0
     
 public class SwiftVibratePlugin: NSObject, FlutterPlugin {
     private var playSound = false
+    private var audioPlayer: AVAudioPlayer?
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "vibrate", binaryMessenger: registrar.messenger())
     let instance = SwiftVibratePlugin()
@@ -46,14 +47,19 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             }
           case "success":
-            if #available(iOS 10.0, *) {
-              let notification = UINotificationFeedbackGenerator()
-              notification.prepare()
-              notification.notificationOccurred(.success)
-            } else {
+//            if #available(iOS 10.0, *) {
+//              let notification = UINotificationFeedbackGenerator()
+//              notification.prepare()
+//              notification.notificationOccurred(.success)
+//            } else {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        if (playSound) {
+            if let path = Bundle.main.path(forResource: "failed", ofType: "wav") {
+            playAudio(path);
             }
+        }
+//            }
           case "warning":
             if #available(iOS 10.0, *) {
               let notification = UINotificationFeedbackGenerator()
@@ -64,26 +70,28 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
             }
           case "error":
-            if #available(iOS 10.0, *) {
-              let notification = UINotificationFeedbackGenerator()
-              notification.prepare()
-              notification.notificationOccurred(.error)
-            } else {
-              // Fallback on earlier versions
-              AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-            }
-          case "heavy":
 //            if #available(iOS 10.0, *) {
-//              let generator = UIImpactFeedbackGenerator(style: .heavy)
-//              generator.prepare()
-//              generator.impactOccurred()
+//              let notification = UINotificationFeedbackGenerator()
+//              notification.prepare()
+//              notification.notificationOccurred(.error)
 //            } else {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
         if (playSound) {
-          AudioServicesPlaySystemSound(1007)
+            if let path = Bundle.main.path(forResource: "failed", ofType: "wav") {
+            playAudio(path);
+            }
         }
-         //   }
+//            }
+          case "heavy":
+            if #available(iOS 10.0, *) {
+              let generator = UIImpactFeedbackGenerator(style: .heavy)
+              generator.prepare()
+              generator.impactOccurred()
+            } else {
+              // Fallback on earlier versions
+              AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+            }
          case "medium":
             if #available(iOS 10.0, *) {
               let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -105,5 +113,10 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
           default:
               result(FlutterMethodNotImplemented)
       }
+    }
+    func playAudio(_ filePath: String) {
+        let url = URL.init(fileURLWithPath: filePath);
+        self.audioPlayer = try? AVAudioPlayer.init(contentsOf: url)
+        self.audioPlayer?.play();
     }
 }
