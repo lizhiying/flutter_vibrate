@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import AudioToolbox
+import AVFoundation
 
 private let isDevice = TARGET_OS_SIMULATOR == 0
     
