@@ -82,7 +82,7 @@ public class VibratePlugin implements MethodCallHandler {
     }
     else if(call.method.equals("error")){
       sartVibrate(500);
-      playSystemSound(R.raw.error_sound);
+      playSystemSound(R.raw.test_error);
       result.success(null);
     }
     else if(call.method.equals("heavy")){
@@ -137,7 +137,8 @@ public class VibratePlugin implements MethodCallHandler {
   private void playSystemSound(int resId){
     if(playSound&&mSoundPool!=null){
       if(resId==0){
-        resId=R.raw.success_sound;
+//        resId=R.raw.success_sound;
+        resId=R.raw.test_success;
       }
       //可以通过四种途径来记载一个音频资源：
       //1.通过一个AssetFileDescriptor对象
