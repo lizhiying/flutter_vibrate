@@ -7,7 +7,9 @@ private let isDevice = TARGET_OS_SIMULATOR == 0
     
 public class SwiftVibratePlugin: NSObject, FlutterPlugin {
     private var playSound = false
-    private var audioPlayer: AVAudioPlayer?
+    private var successPlayer: AVAudioPlayer?
+    private var failedPlayer: AVAudioPlayer?
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "vibrate", binaryMessenger: registrar.messenger())
     let instance = SwiftVibratePlugin()
@@ -56,9 +58,7 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
         if (playSound) {
-            if let path = Bundle.main.path(forResource: "success", ofType: "mp3") {
-            playAudio(path);
-            }
+            successPlay();
         }
 //            }
           case "warning":
@@ -79,9 +79,7 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               // Fallback on earlier versions
               AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
         if (playSound) {
-            if let path = Bundle.main.path(forResource: "failed", ofType: "wav") {
-            playAudio(path);
-            }
+            failedPlay()
         }
 //            }
           case "heavy":
@@ -115,9 +113,38 @@ public class SwiftVibratePlugin: NSObject, FlutterPlugin {
               result(FlutterMethodNotImplemented)
       }
     }
-    func playAudio(_ filePath: String) {
-        let url = URL.init(fileURLWithPath: filePath);
-        self.audioPlayer = try? AVAudioPlayer.init(contentsOf: url)
-        self.audioPlayer?.play();
+    func successPlay() {
+        if let path = Bundle.main.path(forResource: "success", ofType: "mp3") {
+        let url = URL.init(fileURLWithPath: path)
+            if self.successPlayer == nil {
+                self.successPlayer = try? AVAudioPlayer.init(contentsOf: url)
+            }
+            if let play = self.failedPlayer?.play() {
+                if play {
+                    self.failedPlayer?.pause();
+                }
+            }
+        self.successPlayer?.play();
+        }
+    }
+    
+    func failedPlay() {
+        if let path = Bundle.main.path(forResource: "failed", ofType: "wav") {
+        let url = URL.init(fileURLWithPath: path);
+            if self.failedPlayer == nil {
+                self.failedPlayer = try? AVAudioPlayer.init(contentsOf: url)
+            }
+            if let play = self.successPlayer?.play() {
+                if play {
+                    self.successPlayer?.pause();
+                }
+            }
+        self.failedPlayer?.play();
+        }
+    }
+    
+    deinit {
+        self.successPlayer = nil
+        self.failedPlayer = nil
     }
 }
