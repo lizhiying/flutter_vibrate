@@ -2,7 +2,7 @@ name: vibrate
 version: 0.0.9
 description: A Haptic Feedback plugin.
 environment:
-  sdk: ">=2.0.0 <3.0.0"
+  sdk: ">=2.13.0 <4.0.0"
 authors:
   - Clovis Nicolas <clovisnicolas0@gmail.com>
   - Rhodes Davis Jr. <rody.davis.jr@gmail.com>
