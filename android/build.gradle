@@ -1,3 +1,5 @@
+
+
 group 'flutter.plugins.vibrate.vibrate'
 version '1.0-SNAPSHOT'
 
@@ -10,7 +12,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:8.7.3'
     }
 }
 
@@ -26,15 +28,16 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
+    namespace 'flutter.plugins.vibrate'
+    compileSdkVersion 35
 //    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 22
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
         disable 'InvalidPackage'
