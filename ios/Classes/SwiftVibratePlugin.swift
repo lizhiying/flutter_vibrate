@@ -3,7 +3,11 @@ import UIKit
 import AudioToolbox
 import AVFoundation
 
-private let isDevice = TARGET_OS_SIMULATOR == 0
+#if targetEnvironment(simulator)
+private let isDevice = false
+#else
+private let isDevice = true
+#endif
     
 public class SwiftVibratePlugin: NSObject, FlutterPlugin {
     private var playSound = false
